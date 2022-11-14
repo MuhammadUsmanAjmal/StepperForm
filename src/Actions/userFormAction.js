@@ -39,16 +39,30 @@ export const userCreateRequest = (formData) => async (dispatch) => {
 export const userGetRequest = () => async (dispatch) => {
   try {
     dispatch({
+      
       type: USER_GET_REQUEST,
-      Accept: "application/json",
     });
+   const Token = localStorage.getItem("accessToken")
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Token}`,
+      },
+    };
     const { data } = await axios.get(
-      " https://crudnodejsproj.herokuapp.com/users"
-    );
-    dispatch({
+      " https://crudnodejsproj.herokuapp.com/users",config
+    )
+    // if (Token)
+    // { 
+      dispatch({
       type: USER_GET_SUCCESS,
       payload: data,
     });
+      //   } else {
+
+      //     return false
+      // }
+
   } catch (error) {
     dispatch({
       type: USER_GET_FAIL,

@@ -31,7 +31,7 @@ const SecondStep = ({ formData, setFormData, setCount }) => {
   const classes = useStyles();
   const handleSubmit = (e) => {
     e.preventDefault();
-    setCount(3)
+    setCount(6)
     // let obj = Object.assign(educationInputForm,userInputFormStepOne?.userInputForm)
     // navigate("/professionalDetail", {
     //   state: { obj },
@@ -93,8 +93,8 @@ const SecondStep = ({ formData, setFormData, setCount }) => {
         <div className={classes.button}>
           <Button
             variant="contained"
-            color="primary"
-            onClick={(e) => setCount(1)}
+            color="light"
+            onClick={(e) => setCount(4)}
           >
             Back
           </Button>
@@ -102,7 +102,7 @@ const SecondStep = ({ formData, setFormData, setCount }) => {
         <div className={classes.button}>
           <Button
             variant="contained"
-            color="primary"
+            color="light"
             onClick={handleSubmit}
             disabled={
               !formData.university || !formData.degree || !formData.graduation

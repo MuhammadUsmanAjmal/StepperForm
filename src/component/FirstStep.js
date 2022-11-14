@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import { Button, TextField, Typography, makeStyles } from "@material-ui/core";
+// import { MaskedInput } from "mui-masked-input";
+import MaskedInput from "react-text-mask";
+import InputMask from "react-input-mask";
+// import TextField from "material-ui/TextField";
 const useStyles = makeStyles((Theme) => ({
   registerform: {
     textAlign: "center",
@@ -16,7 +20,12 @@ const useStyles = makeStyles((Theme) => ({
     width: "40%",
     marginLeft: "30%",
   },
-
+  inputmasking:{
+    padding:"15px",
+    marginTop:"11px",
+    borderRadius:"6px",
+    borderColor:"black"
+  },
   button: {
     display: "flex",
     justifyContent: "center",
@@ -29,7 +38,7 @@ const FirstStep = ({ formData, setFormData, setCount }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setCount(2);
+    setCount(5);
   };
 
   const classes = useStyles();
@@ -69,7 +78,38 @@ const FirstStep = ({ formData, setFormData, setCount }) => {
             setFormData({ ...formData, lastName: e.target.value })
           }
         />
-        <TextField
+        <MaskedInput
+        className={classes.inputmasking}
+          // id="depositedAmount"
+          placeholder="0300 XXXX XXX"
+          guide={false}
+          mask={[
+            /[0-9]/,
+            /\d/,
+            /\d/,
+            /\d/,
+            " ",
+            /\d/,
+            /\d/,
+            /\d/,
+            " ",
+            /\d/,
+            /\d/,
+            /\d/,
+            /\d/,
+          ]}
+          required={true}
+          value={formData.contact}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              contact: e.target.value,
+            })
+          }
+          // className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
+        {/* <TextField
+          mask="(0)999 999 99 99"
           label="Contact Number"
           margin="normal"
           variant="outlined"
@@ -81,7 +121,7 @@ const FirstStep = ({ formData, setFormData, setCount }) => {
               contact: e.target.value,
             })
           }
-        />
+        /> */}
 
         <TextField
           id="date"
@@ -106,12 +146,10 @@ const FirstStep = ({ formData, setFormData, setCount }) => {
           }
         />
       </div>
-      <div
-        className={classes.button}
-      >
+      <div className={classes.button}>
         <Button
           variant="contained"
-          color="primary"
+          color="light"
           onClick={handleSubmit}
           disabled={
             !formData.firstName ||

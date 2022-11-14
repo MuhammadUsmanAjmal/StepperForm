@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, TextField, Typography, makeStyles } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -8,7 +8,8 @@ import {
   userGetRequest,
   userUpdateRequest,
 } from "../Actions/userFormAction";
-
+import { updateData } from "../App";
+import {useNavigate } from "react-router-dom";
 const useStyles = makeStyles((Theme) => ({
   registerform: {
     textAlign: "center",
@@ -40,16 +41,18 @@ const ThirdStep = ({
   setCount,
   setIsUpdate,
   isUpdate,
-  alert,
+  // alert,
 }) => {
-  const [disabledButton, setDisabledButton] = useState(true);
+  // const [disabledButton, setDisabledButton] = useState(true);
 
+  const {updateItem} = useContext(updateData)
   const dispatch = useDispatch();
-
+const navigate= useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setCount(1);
+    navigate("/table")
+    setCount(3);
     setFormData({
       firstName: "",
       lastName: "",
@@ -71,10 +74,13 @@ const ThirdStep = ({
     // localStorage.setItem("allData", JSON.stringify([...data]));
     // navigate("/table")
   };
-
-  const handleUpdateSubmit = async (e, id) => {
+  const handleUpdateSubmit = async (e,id) => {
     e.preventDefault();
     try {
+      setIsUpdate(false);
+      await dispatch(userUpdateRequest(formData,updateItem));
+      navigate("/table")
+      setCount(3);
       setFormData({
         firstName: "",
         lastName: "",
@@ -88,11 +94,8 @@ const ThirdStep = ({
         designation: "",
         experience: "",
       });
-      setIsUpdate(false);
-      await dispatch(userUpdateRequest(formData, id));
-      setCount(1);
-      dispatch(userGetRequest());
       console.log(("update", formData));
+      dispatch(userGetRequest());
     } catch (error) {}
   };
 
@@ -159,8 +162,8 @@ const ThirdStep = ({
         <div className={classes.button}>
           <Button
             variant="contained"
-            color="primary"
-            onClick={() => setCount(2)}
+            color="light"
+            onClick={() => setCount(5)}
           >
             Back
           </Button>
@@ -169,7 +172,7 @@ const ThirdStep = ({
           <Typography className={classes.button}>
             <Button
               variant="contained"
-              color="primary"
+              color="light"
               style={{
               cursor: handleFormDisabled() ? "not-allowed" : "pointer",}}
               disabled={handleFormDisabled()}
@@ -199,7 +202,7 @@ const ThirdStep = ({
             <Button
               variant="contained"
               color="primary"
-              onSubmit={(e) => handleUpdateSubmit(e, formData._id)}
+              onClick={(e) => handleUpdateSubmit(e, formData._id)}
               disabled={
                 !formData.designation ||
                 !formData.employer ||

@@ -8,19 +8,26 @@ import {
   userUpdateReducers,
   userDeleteReducers,
 } from "../Reducers/userFormReducer";
+import { userSignInReducers,userSignUpReducers } from "../Reducers/userSignInReducer";
 // import userFormReducer from "../Reducers/userFormReducer";
 const reducer = combineReducers({
   userCreateRequest: userCreateReducers,
   userGetRequest: userGetReducers,
   userUpdateRequest: userUpdateReducers,
   userDeleteRequest: userDeleteReducers,
+  userSignIn: userSignInReducers,
+  userSignUp: userSignUpReducers
   // userRegisterReducer: userRegisterReducer,
   //   userEducationalDetail: userEducationalDetailReducer,
   //   userProfessionalDetail: userProfessionalDetailReducer,
 //   userFormReducer: userFormReducer,
 });
+// const Token = localStorage.getItem("accessToken") ? JSON.parse(localStorage.getItem("accessToken")) : null
 
-const initailState = {};
+
+const initailState = {
+  // accessToken :  Token 
+};
 const store = createStore(
   reducer,
   initailState,

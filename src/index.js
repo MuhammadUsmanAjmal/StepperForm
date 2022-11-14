@@ -21,13 +21,16 @@ import "./App.css";
 import "./index.css";
 import App from "./App";
 import { Provider } from "react-redux";
+import {BrowserRouter ,Router} from 'react-router-dom';
 import store from "./storeConfig/Store";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-  // <React.StrictMode>
+  <React.StrictMode>
+  <BrowserRouter>
     <Provider store={store}>
       <App />
     </Provider>
-  // </React.StrictMode>
+      </BrowserRouter>,
+   </React.StrictMode>
 );

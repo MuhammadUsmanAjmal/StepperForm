@@ -1,18 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell ,{ tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { tableCellClasses } from "@mui/material/TableCell";
 import { Typography, makeStyles, Button } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 import ClipLoader from "react-spinners/ClipLoader";
 import { userDeleteRequest, userGetRequest } from "../Actions/userFormAction";
-const ariaLabel = { "aria-label": "description" };
+import { updateData } from "../App";
+import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
+import { logout } from "../Actions/userSignInAction";
+import { Navigate, useNavigate } from "react-router-dom";
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -20,73 +23,143 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
-    fontSize: 13,
+    fontSize: 14,
   },
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
+  '&:nth-of-type(odd)': {
     backgroundColor: theme.palette.action.hover,
   },
   // hide last border
-  "&:last-child td, &:last-child th": {
+  '&:last-child td, &:last-child th': {
     border: 0,
   },
 }));
 
-const useStyles = makeStyles((Theme) => ({
-  registerform: {
+const useStyles = makeStyles((theme) => ({
+  table: {
+    display: "flex",
     textAlign: "center",
     backgroundColor: "gray",
-    textDecoration: "underline",
   },
   button: {
-    display: "flex",
-    justifyContent: "center",
-    marginTop: "20px",
+    margin: "10px",
   },
 }));
 
-const TableStep = ({ setFormData, setIsUpdate,alert }) => {
+const TableStep = ({ setFormData, setIsUpdate, setCount }) => {
+  const { setUpdateItem } = useContext(updateData);
   const dispatch = useDispatch();
+  const navigate=useNavigate()
+
+  const userLogin = useSelector((state) => state.userSignIn);
+  const { SignIn } = userLogin;
+
+  const logoutHandler = () => {
+    dispatch(logout());
+    navigate("/")
+    localStorage.removeItem("userName")
+    setCount(1);
+  };
 
   const getData = useSelector((state) => state?.userGetRequest);
   const { getUser } = getData;
-  const user = getUser;
+  console.log("data here", getUser);
+  // const user = getUser;
   const { loading } = getData;
-  console.log("user", user);
 
   useEffect(() => {
     dispatch(userGetRequest());
   }, []);
 
   const deleteItems = async (id) => {
-    user?.filter((item) => {
+    getUser?.filter((item) => {
       return item.id !== id;
     });
     await dispatch(userDeleteRequest(id));
     dispatch(userGetRequest());
   };
-
-  const editItem = (id) => {
-    let updateEditItems = user?.find((elem) => {
-      return elem._id === id;
-    });
-    setIsUpdate(true);
-    setFormData({ id, ...updateEditItems });
-    console.log("updateEditItems", updateEditItems);
-  };
   const classes = useStyles();
 
-  function handleButton () {
-    alert(user)
-    console.warn("user",user)
-  }
-  useEffect(()=>{
-    handleButton()
-  },[user])
+  const handleSubmitUser = () => {
+    navigate("/firstStep")
+    setCount(4);
+  };
+
+  window.history.pushState(null, null, window.location.href);
+  window.onpopstate = function () {
+      window.history.go(1);
+  };
+  // const Token = localStorage.getItem("accessToken");
+  // useEffect(() => {
+  //   if (Token) {
+  //     window.onbeforeunload = () => {
+  //       return true;
+  //     };
+  //   } else {
+  //     window.onbeforeunload = () => {
+  //       return false;
+  //     };
+  //   }
+  // }, []);
+  // window.history.pushState(null, null, window.location.href);
+  // window.onpopstate = function () {
+  //     window.history.go(1);
+  // };
+
+  // localStorage.setItem("username",JSON.stringify(SignIn?.name))
+  const username = localStorage.setItem("userName",JSON.stringify(SignIn?.result?.name))
   return (
     <div>
+      <Navbar
+        sticky="top"
+        style={{ backgroundColor: "gray" }}
+        expand="lg"
+        collapseOnSelect
+      >
+        <Container>
+          <Navbar.Brand
+            style={{
+              fontSize: "30px",
+              color: "white",
+              textDecoration: "underline",
+            }}
+          >
+            Table Form
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ml-auto mr-5 text-white">
+              {SignIn ? (
+                <NavDropdown id="username" title={SignIn?.result?.name}>
+                  <NavDropdown.Item onClick={logoutHandler}>
+                    Logout
+                  </NavDropdown.Item>
+                </NavDropdown>
+              ) : (
+                <Nav.Link
+                  style={{ color: "white", marginTop: "8px" }}
+                  onClick={() => navigate("/")}
+                  // setCount(1)
+                >
+                  <i className="fas fa-user"></i> SIGN IN
+                </Nav.Link>
+              )}
+            </Nav>
+            <div className={classes.button}>
+              <Button
+                variant="contained"
+                color="light"
+                onClick={handleSubmitUser}
+              >
+                Add New User
+              </Button>
+            </div>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
       {loading ? (
         <Typography
           style={{
@@ -103,13 +176,10 @@ const TableStep = ({ setFormData, setIsUpdate,alert }) => {
           style={{
             textAlign: "center",
             marginBottom: "32px",
-            overflowY: "scroll",
-            height: "300px",
-            marginTop: "20px",
           }}
         >
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            {user?.length > 0 && (
+          <Table  sx={{ minWidth: 700 }} aria-label="customized table">
+            {getUser?.length > 0 && (
               <TableHead style={{ position: "sticky", top: "0px" }}>
                 <TableRow style={{ backgroundColor: "gray" }}>
                   <StyledTableCell>Sr Number</StyledTableCell>
@@ -124,69 +194,102 @@ const TableStep = ({ setFormData, setIsUpdate,alert }) => {
                   <StyledTableCell>EmployerName</StyledTableCell>
                   <StyledTableCell>Designation</StyledTableCell>
                   <StyledTableCell>Experience</StyledTableCell>
-                  <StyledTableCell>Action</StyledTableCell>
+                  <StyledTableCell>Delete</StyledTableCell>
+                  <StyledTableCell>Edit</StyledTableCell>
                 </TableRow>
               </TableHead>
             )}
             <TableBody>
-              {user &&
-                user?.map((item, index) => {
+              {getUser &&
+                getUser?.map((item, index) => {
                   return (
-                    <TableRow key={item?.id}>
+                    <StyledTableRow key={item?.id}>
                       <StyledTableCell component="th" scope="row">
                         {index + 1}
                       </StyledTableCell>
-                      <StyledTableCell component="th" scope="row">
-                        {item.firstName}
+                      <StyledTableCell component="th" scope="item">
+                        {item?.firstName}
                       </StyledTableCell>
                       <StyledTableCell component="th" scope="row">
-                        {item.lastName}
+                        {item?.lastName}
                       </StyledTableCell>
                       <StyledTableCell component="th" scope="row">
-                        {item.contact}
+                        {item?.contact}
                       </StyledTableCell>
                       <StyledTableCell component="th" scope="row">
-                        {item.dateOfBirth}
+                        {item?.dateOfBirth}
                       </StyledTableCell>
                       <StyledTableCell component="th" scope="row">
-                        {item.address}
+                        {item?.address}
                       </StyledTableCell>
-                      <StyledTableCell component="th" scope="row">
-                        {item.university}
-                      </StyledTableCell>
-                      <StyledTableCell component="th" scope="row">
-                        {item.degree}
-                      </StyledTableCell>
-                      <StyledTableCell component="th" scope="row">
-                        {item.graduation}
-                      </StyledTableCell>
-                      <StyledTableCell component="th" scope="row">
-                        {item.employer}
-                      </StyledTableCell>
-                      <StyledTableCell component="th" scope="row">
-                        {item.designation}
-                      </StyledTableCell>
-                      <StyledTableCell component="th" scope="row">
-                        {item.experience}
-                      </StyledTableCell>
-                      <StyledTableCell
-                        // align="right"
-                        sx={{ display: "flex", cursor: "pointer" }}
-                      >
-                        <img
-                          src="https://img.icons8.com/fluency/48/000000/delete-forever.png"
-                          width={30}
-                          title="Delete-Item"
-                          onClick={() => deleteItems(item._id)}
-                        />
-                        <img
-                          src="https://img.icons8.com/color-glass/48/000000/edit.png"
-                          width={30}
-                          title="Edit-Item"
-                          onClick={() => editItem(item._id)}
-                        />
-                      </StyledTableCell>
-                    </TableRow>
+                      {item?.education?.map((data) => {
+                        return (
+                          <>
+                            <StyledTableCell component="th" scope="row">
+                              {data?.university}
+                            </StyledTableCell>
+                            <StyledTableCell component="th" scope="row">
+                              {data?.degree}
+                            </StyledTableCell>
+                            <StyledTableCell component="th" scope="row">
+                              {data?.graduation}
+                            </StyledTableCell>
+                          </>
+                        );
+                      })}
+                      {item?.profession?.map((data) => {
+                        return (
+                          <>
+                            <StyledTableCell component="th" scope="row">
+                              {data?.employer}
+                            </StyledTableCell>
+                            <StyledTableCell component="th" scope="row">
+                              {data?.designation}
+                            </StyledTableCell>
+                            <StyledTableCell component="th" scope="row">
+                              {data?.experience}
+                            </StyledTableCell>
+                            <StyledTableCell component="th" scope="row">
+                              <img
+                                src="https://img.icons8.com/fluency/48/000000/delete-forever.png"
+                                width={30}
+                                title="Delete-Item"
+                                onClick={() => deleteItems(item._id)}
+                              />
+                            </StyledTableCell>
+                            <StyledTableCell component="th" scope="row">
+                              <img
+                                src="https://img.icons8.com/color-glass/48/000000/edit.png"
+                                width={30}
+                                // component="th"
+                                // scope="row"
+                                title="Edit-Item"
+                                onClick={() => {
+                                  setUpdateItem(item._id);
+                                  setFormData({
+                                    firstName: item.firstName,
+                                    lastName: item.lastName,
+                                    contact: item.contact,
+                                    dateOfBirth: item.dateOfBirth,
+                                    address: item.address,
+                                    university: item?.education[0]?.university,
+                                    degree: item?.education[0]?.degree,
+                                    graduation: item?.education[0]?.graduation,
+                                    employer: item?.profession[0]?.employer,
+                                    designation:
+                                      item?.profession[0]?.designation,
+                                    experience: item?.profession[0]?.experience,
+                                  });
+                                  navigate("/firstStep")
+                                  setCount(4);
+                                  setIsUpdate(true);
+                                }}
+                              />
+                            </StyledTableCell>
+                          </>
+                        );
+                      })}
+                    </StyledTableRow>
                   );
                 })}
             </TableBody>
