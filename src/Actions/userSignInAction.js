@@ -27,7 +27,7 @@ export const userSignIn = (signInForm) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_SIGNIN_FAIL,
-      payload: error?.response && error?.response?.data?.message,
+      payload: error?.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }
 };
@@ -53,7 +53,7 @@ export const userSignUp = (signUpForm) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_SIGNUP_FAIL,
-      payload: error?.response && error?.response?.data?.message,
+      payload: error?.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }
 };

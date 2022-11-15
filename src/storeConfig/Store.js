@@ -22,11 +22,17 @@ const reducer = combineReducers({
   //   userProfessionalDetail: userProfessionalDetailReducer,
 //   userFormReducer: userFormReducer,
 });
-// const Token = localStorage.getItem("accessToken") ? JSON.parse(localStorage.getItem("accessToken")) : null
+const userSignInFromStorage = localStorage.getItem("userInfo")
+  ? JSON.parse(localStorage.getItem("userInfo"))
+  : null;
 
+  const userSignUpFromStorage = localStorage.getItem("userInfo")
+  ? JSON.parse(localStorage.getItem("userInfo"))
+  : null;
 
 const initailState = {
-  // accessToken :  Token 
+  userSignIn: { userSignIn: userSignInFromStorage },
+  userSignUp: { userSignUp: userSignUpFromStorage },
 };
 const store = createStore(
   reducer,

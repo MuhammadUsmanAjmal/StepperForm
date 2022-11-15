@@ -57,9 +57,9 @@ const TableStep = ({ setFormData, setIsUpdate, setCount }) => {
   const { SignIn } = userLogin;
 
   const logoutHandler = () => {
-    dispatch(logout());
-    navigate("/")
-    localStorage.removeItem("userName")
+  dispatch(logout());
+  localStorage.removeItem("userName")
+  navigate("/")
     setCount(1);
   };
 

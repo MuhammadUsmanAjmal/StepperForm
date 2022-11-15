@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, TextField, Typography, makeStyles } from "@material-ui/core";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 const useStyles = makeStyles((Theme) => ({
   registerform: {
@@ -29,9 +29,12 @@ const useStyles = makeStyles((Theme) => ({
 
 const SecondStep = ({ formData, setFormData, setCount }) => {
   const classes = useStyles();
+const navigate = useNavigate()
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    setCount(6)
+    navigate("/thirdStep")
+    setCount(3)
     // let obj = Object.assign(educationInputForm,userInputFormStepOne?.userInputForm)
     // navigate("/professionalDetail", {
     //   state: { obj },
@@ -94,7 +97,7 @@ const SecondStep = ({ formData, setFormData, setCount }) => {
           <Button
             variant="contained"
             color="light"
-            onClick={(e) => setCount(4)}
+            onClick={(e) => navigate("/firstStep")}
           >
             Back
           </Button>

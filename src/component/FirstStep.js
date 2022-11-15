@@ -3,6 +3,7 @@ import { Button, TextField, Typography, makeStyles } from "@material-ui/core";
 // import { MaskedInput } from "mui-masked-input";
 import MaskedInput from "react-text-mask";
 import InputMask from "react-input-mask";
+import { Navigate, useNavigate } from "react-router-dom";
 // import TextField from "material-ui/TextField";
 const useStyles = makeStyles((Theme) => ({
   registerform: {
@@ -36,9 +37,12 @@ const useStyles = makeStyles((Theme) => ({
 const FirstStep = ({ formData, setFormData, setCount }) => {
   const [disabledButton, setDisabledButton] = useState(true);
 
+const navigate=useNavigate()
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    setCount(5);
+    navigate("/secondStep")
+    setCount(2);
   };
 
   const classes = useStyles();

@@ -52,21 +52,15 @@ export const userGetRequest = () => async (dispatch) => {
     const { data } = await axios.get(
       " https://crudnodejsproj.herokuapp.com/users",config
     )
-    // if (Token)
-    // { 
+    
       dispatch({
       type: USER_GET_SUCCESS,
       payload: data,
     });
-      //   } else {
-
-      //     return false
-      // }
-
   } catch (error) {
     dispatch({
       type: USER_GET_FAIL,
-      payload: error.response && error.response.data,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }
 };
@@ -90,7 +84,7 @@ export const userUpdateRequest = (formData, id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_UPDATE_FAIL,
-      payload: error.response && error.response.data,
+      payload: error.response && error.response.formData.message ? error.response.formData.message : error.message,
     });
   }
 };
@@ -111,7 +105,7 @@ export const userDeleteRequest = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_DELETE_FAIL,
-      payload: error.response && error.response.data,
+      payload: error.response &&  error.response.data.message ? error.response.data.message : error.message,
     });
   }
 };

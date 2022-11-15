@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Routes ,Route} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import FirstStep from "./FirstStep";
 import SecondStep from "./SecondStep";
 import SignInForm from "./SignInForm";
@@ -86,28 +86,39 @@ const AllSteps = () => {
             />
           }
         />
-        {/* } */}
-      {count === 4 && (
-        <Route exact
-        path="/firstStep"
-        element={
-          <FirstStep
-          count={count}
-          setCount={setCount}
-          formData={formData}
-          setFormData={setFormData}
-          />}/>
-          )}
-          </Routes>
-      {count === 5 && (
+      {/* } */}
+      {/* {count === 1 && ( */}
+        <Route
+          exact
+          path="/firstStep"
+          element={
+            <FirstStep
+            count={count}
+            setCount={setCount}
+            formData={formData}
+            setFormData={setFormData}
+            />
+          }
+          />
+          {/* )}  */}
+      {count === 2 && (
+         <Route
+         exact
+         path="/secondStep"
+         element={
         <SecondStep
-          count={count}
-          setCount={setCount}
-          formData={formData}
-          setFormData={setFormData}
+        count={count}
+        setCount={setCount}
+        formData={formData}
+        setFormData={setFormData}
+        />}
         />
-      )}
-      {count === 6 && (
+        )}
+      {count === 3 && (
+         <Route
+         exact
+         path="/thirdStep"
+         element={
         <ThirdStep
           count={count}
           setCount={setCount}
@@ -115,8 +126,10 @@ const AllSteps = () => {
           setFormData={setFormData}
           isUpdate={isUpdate}
           setIsUpdate={setIsUpdate}
-        />
-      )}
+          />
+         }/>
+          )}
+          </Routes>
     </div>
   );
 };

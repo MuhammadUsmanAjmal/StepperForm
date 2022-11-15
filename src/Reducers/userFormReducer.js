@@ -29,7 +29,7 @@ export const userCreateReducers = (state = {initailState:[]}, action) => {
 export const userGetReducers = (state = {}, action) => {
   switch (action.type) {
     case USER_GET_REQUEST:
-      return { loading: true };
+      return { loading: true,...state };
     case USER_GET_SUCCESS:
       return { loading: false, getUser: action.payload };
     case USER_GET_FAIL:

@@ -52,7 +52,7 @@ const navigate= useNavigate()
   const handleSubmit = (e) => {
     e.preventDefault();
     navigate("/table")
-    setCount(3);
+    // setCount(3);
     setFormData({
       firstName: "",
       lastName: "",
@@ -80,7 +80,7 @@ const navigate= useNavigate()
       setIsUpdate(false);
       await dispatch(userUpdateRequest(formData,updateItem));
       navigate("/table")
-      setCount(3);
+      // setCount(3);
       setFormData({
         firstName: "",
         lastName: "",
@@ -99,6 +99,10 @@ const navigate= useNavigate()
     } catch (error) {}
   };
 
+  const handleBack= () =>{
+    navigate("/secondStep")
+    setCount(2)
+  }
   const handleFormDisabled = () => {
     if (!formData.designation || !formData.employer || !formData.experience) {
       return true;
@@ -163,7 +167,7 @@ const navigate= useNavigate()
           <Button
             variant="contained"
             color="light"
-            onClick={() => setCount(5)}
+            onClick={handleBack}
           >
             Back
           </Button>
