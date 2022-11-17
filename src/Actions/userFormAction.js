@@ -39,10 +39,9 @@ export const userCreateRequest = (formData) => async (dispatch) => {
 export const userGetRequest = () => async (dispatch) => {
   try {
     dispatch({
-      
       type: USER_GET_REQUEST,
     });
-   const Token = localStorage.getItem("accessToken")
+    const Token = localStorage.getItem("accessToken");
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -50,17 +49,21 @@ export const userGetRequest = () => async (dispatch) => {
       },
     };
     const { data } = await axios.get(
-      " https://crudnodejsproj.herokuapp.com/users",config
-    )
-    
-      dispatch({
+      " https://crudnodejsproj.herokuapp.com/users",
+      config
+    );
+
+    dispatch({
       type: USER_GET_SUCCESS,
       payload: data,
     });
   } catch (error) {
     dispatch({
       type: USER_GET_FAIL,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
     });
   }
 };
@@ -80,11 +83,13 @@ export const userUpdateRequest = (formData, id) => async (dispatch) => {
       type: USER_UPDATE_SUCCESS,
       payload: formData,
     });
-    console.log(formData);
   } catch (error) {
     dispatch({
       type: USER_UPDATE_FAIL,
-      payload: error.response && error.response.formData.message ? error.response.formData.message : error.message,
+      payload:
+        error.response && error.response.formData.message
+          ? error.response.formData.message
+          : error.message,
     });
   }
 };
@@ -105,7 +110,10 @@ export const userDeleteRequest = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_DELETE_FAIL,
-      payload: error.response &&  error.response.data.message ? error.response.data.message : error.message,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
     });
   }
 };

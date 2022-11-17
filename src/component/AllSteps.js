@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Outlet } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import FirstStep from "./FirstStep";
 import SecondStep from "./SecondStep";
 import SignInForm from "./SignInForm";
@@ -33,9 +34,6 @@ const AllSteps = () => {
     password: "",
   });
   const [isUpdate, setIsUpdate] = useState(false);
-  // const getData =(data) =>{
-  // console.log("coming from table.js to thirdstep.js",data);
-  // }
 
   const Token = localStorage.getItem("accessToken");
 
@@ -44,7 +42,7 @@ const AllSteps = () => {
       {/* {count === 1 && ( */}
       <Routes>
         <Route
-          exact
+          exact={true}
           path="/"
           element={
             <SignInForm
@@ -54,11 +52,19 @@ const AllSteps = () => {
               setCount={setCount}
             />
           }
+          // element={
+          //   <SignInForm
+          //     signInForm={signInForm}
+          //     setSignInForm={setSignInForm}
+          //     count={count}
+          //     setCount={setCount}
+          //   />
+          // }
         />
         {/* )} */}
         {/* {count === 2 && ( */}
         <Route
-          exact
+          exact={true}
           path="/signup"
           element={
             <SignUpForm
@@ -73,7 +79,7 @@ const AllSteps = () => {
 
         {/* { count === 3 &&    */}
         <Route
-          exact
+          exact={true}
           path="/table"
           element={
             <TableStep
@@ -86,50 +92,53 @@ const AllSteps = () => {
             />
           }
         />
-      {/* } */}
-      {/* {count === 1 && ( */}
+        {/* } */}
+        {/* {count === 1 && ( */}
         <Route
-          exact
+          exact ={true}
           path="/firstStep"
           element={
             <FirstStep
-            count={count}
-            setCount={setCount}
-            formData={formData}
-            setFormData={setFormData}
+              count={count}
+              setCount={setCount}
+              formData={formData}
+              setFormData={setFormData}
             />
           }
-          />
-          {/* )}  */}
-      {count === 2 && (
-         <Route
-         exact
-         path="/secondStep"
-         element={
-        <SecondStep
-        count={count}
-        setCount={setCount}
-        formData={formData}
-        setFormData={setFormData}
-        />}
         />
-        )}
-      {count === 3 && (
-         <Route
-         exact
-         path="/thirdStep"
-         element={
-        <ThirdStep
-          count={count}
-          setCount={setCount}
-          formData={formData}
-          setFormData={setFormData}
-          isUpdate={isUpdate}
-          setIsUpdate={setIsUpdate}
-          />
-         }/>
-          )}
-          </Routes>
+        {/* )}  */}
+        {/* {count === 2 && ( */}
+        <Route
+          exact={true}
+          path="/secondStep"
+          element={
+            <SecondStep
+              count={count}
+              setCount={setCount}
+              formData={formData}
+              setFormData={setFormData}
+            />
+          }
+        />
+        {/* )} */}
+        {/* {count === 3 && ( */}
+        <Route
+          exact={true}
+          path="/thirdStep"
+          element={
+            <ThirdStep
+              count={count}
+              setCount={setCount}
+              formData={formData}
+              setFormData={setFormData}
+              isUpdate={isUpdate}
+              setIsUpdate={setIsUpdate}
+            />
+          }
+        />
+        {/* )} */}
+      </Routes>
+      {Token ? <Outlet /> : <Navigate to="/" />}
     </div>
   );
 };

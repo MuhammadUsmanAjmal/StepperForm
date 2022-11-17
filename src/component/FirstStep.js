@@ -1,10 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, TextField, Typography, makeStyles } from "@material-ui/core";
-// import { MaskedInput } from "mui-masked-input";
 import MaskedInput from "react-text-mask";
-import InputMask from "react-input-mask";
-import { Navigate, useNavigate } from "react-router-dom";
-// import TextField from "material-ui/TextField";
+import { useNavigate } from "react-router-dom";
 const useStyles = makeStyles((Theme) => ({
   registerform: {
     textAlign: "center",
@@ -21,11 +18,11 @@ const useStyles = makeStyles((Theme) => ({
     width: "40%",
     marginLeft: "30%",
   },
-  inputmasking:{
-    padding:"15px",
-    marginTop:"11px",
-    borderRadius:"6px",
-    borderColor:"black"
+  inputmasking: {
+    padding: "15px",
+    marginTop: "11px",
+    borderRadius: "6px",
+    borderColor: "black",
   },
   button: {
     display: "flex",
@@ -35,13 +32,11 @@ const useStyles = makeStyles((Theme) => ({
 }));
 
 const FirstStep = ({ formData, setFormData, setCount }) => {
-  const [disabledButton, setDisabledButton] = useState(true);
-
-const navigate=useNavigate()
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate("/secondStep")
+    navigate("/secondStep");
     setCount(2);
   };
 
@@ -83,7 +78,7 @@ const navigate=useNavigate()
           }
         />
         <MaskedInput
-        className={classes.inputmasking}
+          className={classes.inputmasking}
           // id="depositedAmount"
           placeholder="0300 XXXX XXX"
           guide={false}

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell ,{ tableCellClasses } from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -14,8 +14,7 @@ import { userDeleteRequest, userGetRequest } from "../Actions/userFormAction";
 import { updateData } from "../App";
 import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 import { logout } from "../Actions/userSignInAction";
-import { Navigate, useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -28,11 +27,11 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
+  "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
   },
   // hide last border
-  '&:last-child td, &:last-child th': {
+  "&:last-child td, &:last-child th": {
     border: 0,
   },
 }));
@@ -51,22 +50,19 @@ const useStyles = makeStyles((theme) => ({
 const TableStep = ({ setFormData, setIsUpdate, setCount }) => {
   const { setUpdateItem } = useContext(updateData);
   const dispatch = useDispatch();
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   const userLogin = useSelector((state) => state.userSignIn);
   const { SignIn } = userLogin;
-
+  console.log("signIN", userLogin);
   const logoutHandler = () => {
-  dispatch(logout());
-  localStorage.removeItem("userName")
-  navigate("/")
+    dispatch(logout());
+    navigate("/");
     setCount(1);
   };
 
   const getData = useSelector((state) => state?.userGetRequest);
   const { getUser } = getData;
-  console.log("data here", getUser);
-  // const user = getUser;
   const { loading } = getData;
 
   useEffect(() => {
@@ -80,36 +76,18 @@ const TableStep = ({ setFormData, setIsUpdate, setCount }) => {
     await dispatch(userDeleteRequest(id));
     dispatch(userGetRequest());
   };
-  const classes = useStyles();
 
   const handleSubmitUser = () => {
-    navigate("/firstStep")
+    navigate("/firstStep");
     setCount(4);
   };
 
   window.history.pushState(null, null, window.location.href);
   window.onpopstate = function () {
-      window.history.go(1);
+    window.history.go(1);
   };
-  // const Token = localStorage.getItem("accessToken");
-  // useEffect(() => {
-  //   if (Token) {
-  //     window.onbeforeunload = () => {
-  //       return true;
-  //     };
-  //   } else {
-  //     window.onbeforeunload = () => {
-  //       return false;
-  //     };
-  //   }
-  // }, []);
-  // window.history.pushState(null, null, window.location.href);
-  // window.onpopstate = function () {
-  //     window.history.go(1);
-  // };
 
-  // localStorage.setItem("username",JSON.stringify(SignIn?.name))
-  const username = localStorage.setItem("userName",JSON.stringify(SignIn?.result?.name))
+  const classes = useStyles();
   return (
     <div>
       <Navbar
@@ -132,8 +110,11 @@ const TableStep = ({ setFormData, setIsUpdate, setCount }) => {
 
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto mr-5 text-white">
-              {SignIn ? (
-                <NavDropdown id="username" title={SignIn?.result?.name}>
+              {userLogin ? (
+                <NavDropdown
+                  id="username"
+                  title={userLogin?.userSignIn?.result?.name}
+                >
                   <NavDropdown.Item onClick={logoutHandler}>
                     Logout
                   </NavDropdown.Item>
@@ -178,7 +159,7 @@ const TableStep = ({ setFormData, setIsUpdate, setCount }) => {
             marginBottom: "32px",
           }}
         >
-          <Table  sx={{ minWidth: 700 }} aria-label="customized table">
+          <Table sx={{ minWidth: 700 }} aria-label="customized table">
             {getUser?.length > 0 && (
               <TableHead style={{ position: "sticky", top: "0px" }}>
                 <TableRow style={{ backgroundColor: "gray" }}>
@@ -254,6 +235,7 @@ const TableStep = ({ setFormData, setIsUpdate, setCount }) => {
                                 src="https://img.icons8.com/fluency/48/000000/delete-forever.png"
                                 width={30}
                                 title="Delete-Item"
+                                alt=""
                                 onClick={() => deleteItems(item._id)}
                               />
                             </StyledTableCell>
@@ -261,8 +243,7 @@ const TableStep = ({ setFormData, setIsUpdate, setCount }) => {
                               <img
                                 src="https://img.icons8.com/color-glass/48/000000/edit.png"
                                 width={30}
-                                // component="th"
-                                // scope="row"
+                                alt=""
                                 title="Edit-Item"
                                 onClick={() => {
                                   setUpdateItem(item._id);
@@ -280,7 +261,7 @@ const TableStep = ({ setFormData, setIsUpdate, setCount }) => {
                                       item?.profession[0]?.designation,
                                     experience: item?.profession[0]?.experience,
                                   });
-                                  navigate("/firstStep")
+                                  navigate("/firstStep");
                                   setCount(4);
                                   setIsUpdate(true);
                                 }}

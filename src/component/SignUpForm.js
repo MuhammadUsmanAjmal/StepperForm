@@ -36,59 +36,53 @@ const useStyles = makeStyles((Theme) => ({
 const SignUpForm = ({ signUpForm, setSignUpForm, setCount }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
-  // const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
   const user = useSelector((state) => state?.userSignUp);
   const { loading, error, success } = user;
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (signUpForm.email !== ""){
-      setMessage("Email Is Valid")
+    if (signUpForm.email !== "") {
+      setMessage("Email Is Valid");
     }
     dispatch(userSignUp(signUpForm));
   };
-  useEffect(()=>{
-
+  useEffect(() => {
     if (success) {
-      //  setCount(3);
-      navigate("/table")
+      navigate("/table");
     }
     if (error) {
-       toast(error);
+      toast(error);
     }
     setMessage(false);
-  },[success,error])
-
+  }, [success,error]);
 
   const handleRegister = (e) => {
     e.preventDefault();
     setCount(1);
-    navigate("/")
+    navigate("/");
   };
 
   const handleToggle = () => {
     setShowPassword(!showPassword);
   };
 
-  var pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/
-  const emailvalidation = (e) =>{
-   setSignUpForm({...signUpForm ,email : e.target.value});
+  var pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+  const emailvalidation = (e) => {
+    setSignUpForm({ ...signUpForm, email: e.target.value });
 
-    if (pattern.test(signUpForm.email) === false){
-      setErrorMsg("Please Enter Valid Email Address")
+    if (pattern.test(signUpForm.email) === false) {
+      setErrorMsg("Please Enter Valid Email Address");
+    } else {
+      setErrorMsg("");
+      return true;
     }
-    else{
-      setErrorMsg("")
-      return true
-    }
-  }
+  };
   return (
     <div>
       <Typography className={classes.signupform} variant="h3">
@@ -97,7 +91,7 @@ const SignUpForm = ({ signUpForm, setSignUpForm, setCount }) => {
 
       <ToastContainer />
       {/* {error && toast(error)} */}
-      
+
       <div className={classes.usersignupForm}>
         <TextField
           label="FirstName"
@@ -144,7 +138,7 @@ const SignUpForm = ({ signUpForm, setSignUpForm, setCount }) => {
           //   setSignUpForm({ ...signUpForm, email: e.target.value })
           // }
         />
-      <Typography className="text-danger ">{errorMsg}</Typography>
+        <Typography className="text-danger ">{errorMsg}</Typography>
         <Typography className="text-success ">{message}</Typography>
         {/* <div
         style={{
@@ -230,7 +224,7 @@ const SignUpForm = ({ signUpForm, setSignUpForm, setCount }) => {
                 !signUpForm.password ||
                 !signUpForm.confirmPassword
               }
-              >
+            >
               Sign Up
               {loading && <Loader />}
             </Button>

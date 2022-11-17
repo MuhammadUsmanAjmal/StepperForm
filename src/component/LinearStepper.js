@@ -315,9 +315,6 @@ const LinearStepper = () => {
     setActiveStep(activeStep + 1);
   };
 
-  // const onSubmit = (data) => {
-  //   console.log(data);
-  // };
   return (
     <div>
       <Stepper alternativeLabel activeStep={activeStep}>

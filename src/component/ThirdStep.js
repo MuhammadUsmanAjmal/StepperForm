@@ -1,7 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Button, TextField, Typography, makeStyles } from "@material-ui/core";
 import { useDispatch } from "react-redux";
-import ClipLoader from "react-spinners/ClipLoader";
 // import {AddStepperData} from "../Actions/userFormAction"
 import {
   userCreateRequest,
@@ -9,7 +8,7 @@ import {
   userUpdateRequest,
 } from "../Actions/userFormAction";
 import { updateData } from "../App";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const useStyles = makeStyles((Theme) => ({
   registerform: {
     textAlign: "center",
@@ -45,13 +44,13 @@ const ThirdStep = ({
 }) => {
   // const [disabledButton, setDisabledButton] = useState(true);
 
-  const {updateItem} = useContext(updateData)
+  const { updateItem } = useContext(updateData);
   const dispatch = useDispatch();
-const navigate= useNavigate()
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate("/table")
+    navigate("/table");
     // setCount(3);
     setFormData({
       firstName: "",
@@ -74,12 +73,12 @@ const navigate= useNavigate()
     // localStorage.setItem("allData", JSON.stringify([...data]));
     // navigate("/table")
   };
-  const handleUpdateSubmit = async (e,id) => {
+  const handleUpdateSubmit = async (e, id) => {
     e.preventDefault();
     try {
       setIsUpdate(false);
-      await dispatch(userUpdateRequest(formData,updateItem));
-      navigate("/table")
+      await dispatch(userUpdateRequest(formData, updateItem));
+      navigate("/table");
       // setCount(3);
       setFormData({
         firstName: "",
@@ -94,15 +93,14 @@ const navigate= useNavigate()
         designation: "",
         experience: "",
       });
-      console.log(("update", formData));
       dispatch(userGetRequest());
     } catch (error) {}
   };
 
-  const handleBack= () =>{
-    navigate("/secondStep")
-    setCount(2)
-  }
+  const handleBack = () => {
+    navigate("/secondStep");
+    setCount(2);
+  };
   const handleFormDisabled = () => {
     if (!formData.designation || !formData.employer || !formData.experience) {
       return true;
@@ -164,11 +162,7 @@ const navigate= useNavigate()
       </div>
       <div style={{ diaplay: "flex" }}>
         <div className={classes.button}>
-          <Button
-            variant="contained"
-            color="light"
-            onClick={handleBack}
-          >
+          <Button variant="contained" color="light" onClick={handleBack}>
             Back
           </Button>
         </div>
@@ -178,7 +172,8 @@ const navigate= useNavigate()
               variant="contained"
               color="light"
               style={{
-              cursor: handleFormDisabled() ? "not-allowed" : "pointer",}}
+                cursor: handleFormDisabled() ? "not-allowed" : "pointer",
+              }}
               disabled={handleFormDisabled()}
               onClick={handleSubmit}
               // disabled={
@@ -187,7 +182,7 @@ const navigate= useNavigate()
               //   !formData.experience
               // }
             >
-                {/* <span>
+              {/* <span>
                 {alert?.loading && (
                   <div className="flex">
                     <ClipLoader
